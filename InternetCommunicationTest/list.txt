@@ -1,0 +1,17 @@
+baidu
+https://cloud.baidu.com/doc/KG/s/vjwvyjkzz/#%E8%BF%94%E5%9B%9E%E6%A0%BC%E5%BC%8F
+
+token
+https://aip.baidubce.com/oauth/2.0/token?grant_type=client_credentials&client_id=ZDU7CENrnOWsNPHfqzLvYBiH&client_secret=D3GXXyBe42mp7FYWFyjSkAYIp1P3jSRT
+
+语义识别
+https://aip.baidubce.com/rpc/2.0/kg/v1/cognitive/entity_annotation?access_token=24.6374c591c7a16c9f7a499b96e908b87a.2592000.1566093149.282335-16840394
+
+百度关联搜索
+https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su?wd=${%E4%BA%AC%E4%B8%9C}&cb=SR
+
+参考资料
+https://www.jb51.net/article/106785.htm
+https://blog.csdn.net/weixin_42021727/article/details/80546779
+
+https://blog.csdn.net/shuicsdn/article/details/76408716
