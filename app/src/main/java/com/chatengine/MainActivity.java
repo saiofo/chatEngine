@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
         initMsgs(); // 初始化消息数据
         inputText = (EditText) findViewById(R.id.input_text);
         send = (Button) findViewById(R.id.send);
+
         msgRecyclerView = (RecyclerView) findViewById(R.id.msg_recycle_view);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         msgRecyclerView.setLayoutManager(layoutManager);
