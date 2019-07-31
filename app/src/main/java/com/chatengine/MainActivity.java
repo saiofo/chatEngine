@@ -63,11 +63,11 @@ public class MainActivity extends AppCompatActivity {
                     Msg msg = new Msg(content, Msg.TYPE_SENT);
                     msgList.add(msg);
                     fresh();
-
-                    //获取输入文本
+//                    获取输入文本
                     textmanager.setTextContent(content);
                     textmanager.SemanticRecongize();
                     int timeout = 0;
+
 
 //                    while (!textmanager.flag&&(timeout<30)){
 //                        try {
@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
 //                            e.printStackTrace();
 //                        }
 //                    }
-
+//
                     if (timeout<30){
                         Msg msg1 = new Msg(receivedMsg, Msg.TYPE_RECEIVED);
                         msgList.add(msg1);
@@ -86,12 +86,15 @@ public class MainActivity extends AppCompatActivity {
                     else
                         Toast.makeText(MainActivity.this,"请求超时",Toast.LENGTH_SHORT).show();
 
+
 //                    adapter.notifyItemInserted(msgList.size() - 1);
 //                    msgRecyclerView.scrollToPosition(msgList.size() - 1);
 //                    inputText.setText("");
                 }
             }
         });
+
+//        msgRecyclerView.addOnItemTouchListener();
     }
 
     /**
