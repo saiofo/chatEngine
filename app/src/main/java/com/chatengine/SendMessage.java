@@ -28,24 +28,28 @@ public class SendMessage {
         RequestBody body = RequestBody.create(mediaType, json);
         Request request = new Request.Builder().url(url).post(body)
                 .addHeader("content-type", "application/json").build();
-        client.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                Log.d(TAG, "onFailure: " + e.getMessage());
-            }
 
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                Log.d(TAG, response.protocol() + " " +response.code() + " " + response.message());
-                Headers headers = response.headers();
-                for (int i = 0; i < headers.size(); i++) {
-                    Log.d(TAG, headers.name(i) + ":" + headers.value(i));
-                }
-                Log.d(TAG, "onResponse: " + response.body().string());
-                result = response.body().string();
-            }
-        });
+        Response response = client.newCall(request).execute();
 
-        return result;
+        return response.body().string();
+//        client.newCall(request).enqueue(new Callback() {
+//            @Override
+//            public void onFailure(Call call, IOException e) {
+//                Log.d(TAG, "onFailure: " + e.getMessage());
+//            }
+//
+//            @Override
+//            public void onResponse(Call call, Response response) throws IOException {
+//                Log.d(TAG, response.protocol() + " " +response.code() + " " + response.message());
+//                Headers headers = response.headers();
+//                for (int i = 0; i < headers.size(); i++) {
+//                    Log.d(TAG, headers.name(i) + ":" + headers.value(i));
+//                }
+//                Log.d(TAG, "onResponse: " + response.body().string());
+//                result = response.body().string();
+//            }
+//        });
+
+//        return result;
     }
 }

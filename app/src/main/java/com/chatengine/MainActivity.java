@@ -7,10 +7,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,14 +31,16 @@ public class MainActivity extends AppCompatActivity {
 
     private MsgAdapter adapter;
 
-    private static String receivedMsg = null;
+    private String receivedMsg = null;
 
     private Handler mHandler = new Handler(){
         @Override
         public void handleMessage(Message message){
             Bundle bundle = message.getData();
             receivedMsg = bundle.get("text").toString();
-            Toast.makeText(MainActivity.this,"收到"+bundle.get("text").toString()+"啦",Toast.LENGTH_SHORT).show();
+            EventBus.getDefault().post(new Msg(receivedMsg, Msg.TYPE_RECEIVED));
+            fresh();
+//            Toast.makeText(MainActivity.this,"收到"+bundle.get("text").toString()+"啦",Toast.LENGTH_SHORT).show();
         }
     };
 
@@ -45,10 +52,15 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        initMsgs(); // 初始化消息数据
+
+        //注册EventBus
+        EventBus.getDefault().register(this);
+
         inputText = (EditText) findViewById(R.id.input_text);
         send = (Button) findViewById(R.id.send);
         final TextManager textmanager = new TextManager(this);
+
+        initMsgs(); // 初始化消息数据
 
         msgRecyclerView = (RecyclerView) findViewById(R.id.msg_recycle_view);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
@@ -66,8 +78,10 @@ public class MainActivity extends AppCompatActivity {
 //                    获取输入文本
                     textmanager.setTextContent(content);
                     textmanager.SemanticRecongize();
-                    int timeout = 0;
 
+
+
+//                    int timeout = 0;
 
 //                    while (!textmanager.flag&&(timeout<30)){
 //                        try {
@@ -78,13 +92,13 @@ public class MainActivity extends AppCompatActivity {
 //                        }
 //                    }
 //
-                    if (timeout<30){
-                        Msg msg1 = new Msg(receivedMsg, Msg.TYPE_RECEIVED);
-                        msgList.add(msg1);
-                        fresh();
-                    }
-                    else
-                        Toast.makeText(MainActivity.this,"请求超时",Toast.LENGTH_SHORT).show();
+//                    if (timeout<30){
+//                        Msg msg1 = new Msg(receivedMsg, Msg.TYPE_RECEIVED);
+//                        msgList.add(msg1);
+//                        fresh();
+//                    }
+//                    else
+//                        Toast.makeText(MainActivity.this,"请求超时",Toast.LENGTH_SHORT).show();
 
 
 //                    adapter.notifyItemInserted(msgList.size() - 1);
@@ -95,6 +109,11 @@ public class MainActivity extends AppCompatActivity {
         });
 
 //        msgRecyclerView.addOnItemTouchListener();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void Event(Msg msg){
+        msgList.add(msg);
     }
 
     /**
@@ -116,5 +135,14 @@ public class MainActivity extends AppCompatActivity {
         msgRecyclerView.scrollToPosition(msgList.size() - 1);
         // 清空输入框中的内容
         inputText.setText("");
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
     }
 }
