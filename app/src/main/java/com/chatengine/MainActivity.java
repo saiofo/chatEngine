@@ -78,32 +78,6 @@ public class MainActivity extends AppCompatActivity {
 //                    获取输入文本
                     textmanager.setTextContent(content);
                     textmanager.SemanticRecongize();
-
-
-
-//                    int timeout = 0;
-
-//                    while (!textmanager.flag&&(timeout<30)){
-//                        try {
-//                            Thread.sleep(1000);
-//                            timeout++;
-//                        } catch (InterruptedException e) {
-//                            e.printStackTrace();
-//                        }
-//                    }
-//
-//                    if (timeout<30){
-//                        Msg msg1 = new Msg(receivedMsg, Msg.TYPE_RECEIVED);
-//                        msgList.add(msg1);
-//                        fresh();
-//                    }
-//                    else
-//                        Toast.makeText(MainActivity.this,"请求超时",Toast.LENGTH_SHORT).show();
-
-
-//                    adapter.notifyItemInserted(msgList.size() - 1);
-//                    msgRecyclerView.scrollToPosition(msgList.size() - 1);
-//                    inputText.setText("");
                 }
             }
         });

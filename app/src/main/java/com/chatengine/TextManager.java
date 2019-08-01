@@ -47,6 +47,7 @@ public class TextManager {
         return textContent;
     }
 
+    //语义识别功能
     public void SemanticRecongize(){
         final String url = "https://aip.baidubce.com/rpc/2.0/kg/v1/cognitive/entity_annotation?access_token=24.6374c591c7a16c9f7a499b96e908b87a.2592000.1566093149.282335-16840394";
         final JSONObject map = new JSONObject();
@@ -60,10 +61,7 @@ public class TextManager {
                         map.put("data",textContent);
                         SendMessage sendMessage = new SendMessage();
                         final String str = sendMessage.doPostHttpRequest(url, map.toString());
-
-//                        //将str发给main
-//                        EventBus.getDefault().post(new Msg(str, Msg.TYPE_RECEIVED));
-
+                        //将结果str发送给主线程
                         sendToActivity(str);
                     } catch (Exception e) {
                         e.printStackTrace();
