@@ -1,4 +1,4 @@
-package com.chatengine;
+package com.chatengine.messageOrganizer;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -7,6 +7,8 @@ import android.os.Message;
 import org.json.JSONObject;
 
 import android.os.Handler;
+
+import com.chatengine.MainActivity;
 
 public class TextManager {
     public boolean flag = false;
@@ -38,6 +40,7 @@ public class TextManager {
         flag = true;
     }
 
+    //获取输入文本
     public void setTextContent(String textContent) {
         this.textContent = textContent;
         System.out.println(this.textContent);
@@ -61,6 +64,11 @@ public class TextManager {
                         map.put("data",textContent);
                         SendMessage sendMessage = new SendMessage();
                         final String str = sendMessage.doPostHttpRequest(url, map.toString());
+
+                        /*
+                        文本处理
+                         */
+
                         //将结果str发送给主线程
                         sendToActivity(str);
                     } catch (Exception e) {
