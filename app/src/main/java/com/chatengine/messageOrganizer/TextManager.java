@@ -1,6 +1,7 @@
 package com.chatengine.messageOrganizer;
 
 import android.app.Activity;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Message;
 
@@ -8,16 +9,32 @@ import org.json.JSONObject;
 
 import android.os.Handler;
 
+import androidx.annotation.RequiresApi;
+
 import com.chatengine.MainActivity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class TextManager {
+
+    //方法调用标记
     public boolean flag = false;
 
+    //输入框输入的文本内容
     private String textContent = null;
 
+    //textManager类的handler
     private Handler sHandler = null;
-//
+
+    //android主线程
     private MainActivity mainActivity = null;
+
+    //返回结果内容处理类
+    private ContentHandle contentHandle = new ContentHandle();
+
+    //请求发送类
+    SendMessage sendMessage = new SendMessage();
 
     public TextManager(){
 
@@ -40,7 +57,7 @@ public class TextManager {
         flag = true;
     }
 
-    //获取输入文本
+    //传入输入文本
     public void setTextContent(String textContent) {
         this.textContent = textContent;
         System.out.println(this.textContent);
@@ -57,17 +74,32 @@ public class TextManager {
         flag = false;
 
         new Thread(new Runnable() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void run() {
                 if (textContent!=null) {
                     try {
                         map.put("data",textContent);
-                        SendMessage sendMessage = new SendMessage();
-                        final String str = sendMessage.doPostHttpRequest(url, map.toString());
+//                        SendMessage sendMessage = new SendMessage();
+                        final String requestStr = sendMessage.doPostHttpRequest(url, map.toString());
 
                         /*
                         文本处理
                          */
+                        String str = null;
+                        List<String> getWords = new ArrayList<String>();
+                        List<String> getDesc = new ArrayList<String>();
+                        getWords = contentHandle.searchTraget(requestStr,"mention");
+                        getDesc = contentHandle.searchTraget(requestStr,"desc");
+
+                        if (getWords.size()==getDesc.size()){
+                            for (int i=0;i<getWords.size();i++){
+                                getWords.set(i,getWords.get(i)+":"+getDesc.get(i));
+                            }
+                            str = String.join("\n",getWords);
+                        }
+                        else
+                            str = "json获取有误";
 
                         //将结果str发送给主线程
                         sendToActivity(str);
@@ -79,5 +111,11 @@ public class TextManager {
                     System.out.println("输入内容为空!");
             }
         }).start();
+    }
+
+    //查天气
+    public void SearchWeather(String location){
+        final String url = "http://www.weather.com.cn/data/sk/101190101.html";
+        flag = false;
     }
 }
