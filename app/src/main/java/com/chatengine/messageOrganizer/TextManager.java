@@ -67,6 +67,13 @@ public class TextManager {
         return textContent;
     }
 
+    public void alpha(){
+        if (textContent.equals("天气"))
+            SearchWeather("6",null);
+        else
+            SemanticRecongize();
+    }
+
     //语义识别功能
     public void SemanticRecongize(){
         final String url = "https://aip.baidubce.com/rpc/2.0/kg/v1/cognitive/entity_annotation?access_token=24.6374c591c7a16c9f7a499b96e908b87a.2592000.1566093149.282335-16840394";
@@ -114,8 +121,39 @@ public class TextManager {
     }
 
     //查天气
-    public void SearchWeather(String location){
-        final String url = "http://www.weather.com.cn/data/sk/101190101.html";
+    public void SearchWeather(String type, final String location){
+        final String url = "https://www.tianqiapi.com/api/?version=v"+type+"&city="+location;
         flag = false;
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    String requestWeather = sendMessage.doGetHttpRequest(url);
+
+                    /*
+                    把返回的数据拼接为可读文本
+                     */
+                    String tmp = null;
+                    List<String> city = contentHandle.searchTraget(requestWeather,"city");
+                    String getCity = contentHandle.convertUnicode(city.get(0));
+                    if (!location.equals(getCity)){
+                        tmp = "没有"+location+"的天气信息";
+                    }
+                    else{
+                        List<String> updateTime = contentHandle.searchTraget(requestWeather,"update_time");
+                        String getTime = contentHandle.convertUnicode(updateTime.get(0));
+
+                        List<String> wea = contentHandle.searchTraget(requestWeather,"wea");
+                        String getWea = contentHandle.convertUnicode(wea.get(0));
+
+                        tmp = getCity+"天气"+"\n"+getWea+"\n"+getTime;
+                    }
+                    sendToActivity(tmp);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        }).start();
     }
 }

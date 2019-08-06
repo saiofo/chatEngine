@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
                     fresh();
 //                    获取输入文本
                     textmanager.setTextContent(content);
-                    textmanager.SemanticRecongize();
+                    textmanager.alpha();
                 }
             }
         });

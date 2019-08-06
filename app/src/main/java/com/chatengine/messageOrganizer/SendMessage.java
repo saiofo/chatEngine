@@ -2,6 +2,8 @@ package com.chatengine.messageOrganizer;
 
 import android.util.Log;
 
+import org.json.JSONObject;
+
 import java.io.IOException;
 
 import okhttp3.Call;
@@ -27,7 +29,7 @@ public class SendMessage {
      * @return 以string的形式返回json
      * @throws IOException
      */
-    public static String doPostHttpRequest(String url, String json) throws IOException {
+    public String doPostHttpRequest(String url, String json) throws IOException {
         MediaType mediaType = MediaType.parse("application/json");
         RequestBody body = RequestBody.create(mediaType, json);
         Request request = new Request.Builder().url(url).post(body)
@@ -44,7 +46,7 @@ public class SendMessage {
      * @return String类型返回response
      * @throws IOException
      */
-    public  String doGetHtpRequest(String url) throws IOException{
+    public String doGetHttpRequest(String url) throws IOException{
         //1 构造Request
 //        Request.Builder builder = new Request.Builder();
         Request request=new Request.Builder().url(url).get()
