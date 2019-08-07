@@ -49,9 +49,9 @@ public class ContentHandle {
                 sb.append((char)Integer.parseInt(utfString.substring(i+2, i+6), 16));
             }
         }
-        String endStr = utfString.substring(iint+1, utfString.length());
+//        String endStr = utfString.substring(iint+1, utfString.length());
 
 //        return sb+""+endStr;
-        return  endStr;
+        return  sb.toString();
     }
 }
