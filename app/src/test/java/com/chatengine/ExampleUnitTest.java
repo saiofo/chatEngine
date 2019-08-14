@@ -1,6 +1,7 @@
 package com.chatengine;
 
 import com.chatengine.messageOrganizer.ContentHandle;
+import com.chatengine.wordEntity.propertyEnum.Ask;
 
 import org.junit.Test;
 
@@ -22,6 +23,8 @@ import static org.junit.Assert.*;
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
 public class ExampleUnitTest {
+
+    Ask ask;
 
     private static final OkHttpClient client = new OkHttpClient();
 
@@ -117,4 +120,6 @@ public class ExampleUnitTest {
             System.out.println(dict.get(i));
         }
     }
+
+    //测试enum
 }

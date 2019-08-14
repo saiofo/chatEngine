@@ -36,6 +36,13 @@ public class TextManager {
     //请求发送类
     SendMessage sendMessage = new SendMessage();
 
+    //依存句法分析词典
+    List<String> dict = new ArrayList<String>();
+
+    public void setDict(List<String> dict) {
+        this.dict = dict;
+    }
+
     public TextManager(){
 
     }
@@ -69,12 +76,16 @@ public class TextManager {
 
     //文本处理管理类
     public void alpha(){
-        if (textContent.equals("天气"))
-            searchWeather("6",null);
-        else{
-            semanticRecongize();
-            syntacticAnalysis();
-        }
+
+        syntacticAnalysis();
+
+
+//        if (textContent.equals("天气"))
+//            searchWeather("6",null);
+//        else{
+//            semanticRecongize();
+//            syntacticAnalysis();
+//        }
     }
 
     //依存句法分析
@@ -109,6 +120,8 @@ public class TextManager {
 
                         //将结果str发送给主线程
                         sendToActivity(str);
+                        //将字典传入TextManager
+                        setDict(getDict);
 
                     } catch (Exception e) {
                         e.printStackTrace();

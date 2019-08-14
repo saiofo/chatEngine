@@ -44,17 +44,17 @@ public class ContentHandle {
         //创建Pattern并进行匹配
         Pattern pattern= Pattern.compile(pattStr);
         Matcher matcher=pattern.matcher(str);
-        //将所有匹配的结果打印输出
+        //将所有匹配的结果输出
         while(matcher.find()) {
             strs.add(matcher.group());
         }
 
         for (int i=0;i<strs.size();i++){
             String pattList = "\\{.*?\\}";
-            //创建Pattern并进行匹配
+            //创建Pattern并匹配每一个词
             Pattern dictPattern = Pattern.compile(pattList);
             Matcher dictMatcher = dictPattern.matcher(strs.get(i));
-            //将所有匹配的结果打印输出
+            //将所有匹配的结果输出
             while(dictMatcher.find()) {
 //            System.out.println(matcher.group());
                 dict.add(dictMatcher.group());
