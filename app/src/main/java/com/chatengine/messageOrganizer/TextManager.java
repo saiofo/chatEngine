@@ -12,9 +12,12 @@ import android.os.Handler;
 import androidx.annotation.RequiresApi;
 
 import com.chatengine.MainActivity;
+import com.chatengine.wordEntity.Words;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static java.lang.String.join;
 
 public class TextManager {
 
@@ -75,9 +78,31 @@ public class TextManager {
     }
 
     //文本处理管理类
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public void alpha(){
 
         syntacticAnalysis();
+
+        System.out.println(join("\n",dict));
+
+//        ArrayList<Words> wordsList = contentHandle.createEntity(dict);
+//        Words target = contentHandle.findThatOne(wordsList,"word","天气");
+//        Words location = contentHandle.findThatOne(wordsList,"postag","ns");
+//        String city = null;
+//        if (target!=null){
+//            if (target.getWord().equals("天气")){
+//                if (location==null)
+//                    searchWeather("6",null);
+//                if (location!=null){
+//                    city = location.getWord();
+//                    searchWeather("6",city);
+//                }
+//            }
+//        }
+        if (textContent.equals("天气"))
+            searchWeather("6",null);
+        if (textContent.equals("南京天气"))
+            searchWeather("6","南京");
 
 
 //        if (textContent.equals("天气"))
@@ -116,7 +141,7 @@ public class TextManager {
                         List<String> getDict = new ArrayList<String>();
                         getDict = contentHandle.searchDictTraget(requestStr,"items");
 
-                        str = String.join("\n",getDict);
+                        str = join("\n",getDict);
 
                         //将结果str发送给主线程
                         sendToActivity(str);
@@ -204,7 +229,7 @@ public class TextManager {
                             for (int i=0;i<getWords.size();i++){
                                 getWords.set(i,getWords.get(i)+":"+getDesc.get(i));
                             }
-                            str = String.join("\n",getWords);
+                            str = join("\n",getWords);
                         }
                         else
                             str = "json获取有误";

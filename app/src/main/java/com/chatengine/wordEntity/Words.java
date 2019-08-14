@@ -51,4 +51,15 @@ public class Words {
     public void setDeprel(String deprel) {
         this.deprel = deprel;
     }
+
+    @Override
+    public String toString() {
+        return "Words{" +
+                "id='" + id + '\'' +
+                ", word='" + word + '\'' +
+                ", postag='" + postag + '\'' +
+                ", head='" + head + '\'' +
+                ", deprel='" + deprel + '\'' +
+                '}';
+    }
 }
