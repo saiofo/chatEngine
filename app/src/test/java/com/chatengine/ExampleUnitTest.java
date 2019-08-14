@@ -24,8 +24,6 @@ import static org.junit.Assert.*;
  */
 public class ExampleUnitTest {
 
-    Ask ask;
-
     private static final OkHttpClient client = new OkHttpClient();
 
     private ContentHandle contentHandle = new ContentHandle();;
