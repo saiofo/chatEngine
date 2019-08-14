@@ -10,6 +10,20 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <!-- APP_ID API_KEY SECRET_KEY-->
+        <meta-data android:name="com.baidu.speech.APP_ID"
+            android:value="16840394" />
+        <meta-data
+            android:name="com.baidu.speech.API_KEY"
+            android:value="ZDU7CENrnOWsNPHfqzLvYBiH" />
+        <meta-data
+            android:name="com.baidu.speech.SECRET_KEY"
+            android:value="D3GXXyBe42mp7FYWFyjSkAYIp1P3jSRT" />
+        <!--百度接口-->
+        <!--<service android:name="com.baidu.speech.VoiceRecognitionService" android:exported="false" />-->
+
+
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -18,7 +32,13 @@
             </intent-filter>
         </activity>
     </application>
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <!--语音功能附加权限-->
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
 </manifest>

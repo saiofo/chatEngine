@@ -30,6 +30,41 @@ public class ContentHandle {
     }
 
     /**
+     * 返回json中的字典list
+     * @param str 待查找string类型的json数据
+     * @param target json中list的名称
+     * @return list对应dict
+     */
+    public List<String> searchDictTraget(String str, String target){
+        List<String> strs = new ArrayList<>();
+        List<String> dict = new ArrayList<>();
+
+        //匹配dict(不包含[])的正则表达式
+        String pattStr = "(?<=\""+target+"\":\\s?\\[).*?(?=\\]\\})";
+        //创建Pattern并进行匹配
+        Pattern pattern= Pattern.compile(pattStr);
+        Matcher matcher=pattern.matcher(str);
+        //将所有匹配的结果打印输出
+        while(matcher.find()) {
+            strs.add(matcher.group());
+        }
+
+        for (int i=0;i<strs.size();i++){
+            String pattList = "\\{.*?\\}";
+            //创建Pattern并进行匹配
+            Pattern dictPattern = Pattern.compile(pattList);
+            Matcher dictMatcher = dictPattern.matcher(strs.get(i));
+            //将所有匹配的结果打印输出
+            while(dictMatcher.find()) {
+//            System.out.println(matcher.group());
+                dict.add(dictMatcher.group());
+            }
+        }
+
+        return dict;
+    }
+
+    /**
      * 将汉字字节码转为中文字符
      * @param utfString utf字节码（目前不支持识别字节码以外内容）
      * @return 中文字符串

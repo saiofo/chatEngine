@@ -5,7 +5,10 @@ import com.chatengine.messageOrganizer.ContentHandle;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -73,5 +76,45 @@ public class ExampleUnitTest {
         }
 
 //        convert(tmp);
+    }
+
+    /**
+     * 返回json中的字典list
+     */
+    @Test
+    public void searchDictTraget(){
+        String str = "{\"log_id\": 3902223915521359150, \"text\": \"今天什么天气\", \"items\": [{\"postag\": \"t\", \"head\": 3, \"word\": \"今天\", \"id\": 1, \"deprel\": \"TMP\"}, {\"postag\": \"r\", \"head\": 3, \"word\": \"什么\", \"id\": 2, \"deprel\": \"ATT\"}, {\"postag\": \"n\", \"head\": 0, \"word\": \"天气\", \"id\": 3, \"deprel\": \"HED\"}]}";
+        String target = "items";
+
+        List<String> strs = new ArrayList<>();
+        List<String> dict = new ArrayList<>();
+
+        //匹配dict(不包含[])的正则表达式
+        String pattStr = "(?<=\""+target+"\":\\s?\\[).*?(?=\\]\\})";
+        //创建Pattern并进行匹配
+        Pattern pattern= Pattern.compile(pattStr);
+        Matcher matcher=pattern.matcher(str);
+        //将所有匹配的结果打印输出
+        while(matcher.find()) {
+            System.out.println(matcher.group());
+            strs.add(matcher.group());
+        }
+
+        for (int i=0;i<strs.size();i++){
+            String pattList = "\\{.*?\\}";
+            //创建Pattern并进行匹配
+            Pattern dictPattern = Pattern.compile(pattList);
+
+            Matcher dictMatcher = dictPattern.matcher(strs.get(i));
+            //将所有匹配的结果打印输出
+            while(dictMatcher.find()) {
+//            System.out.println(matcher.group());
+                dict.add(dictMatcher.group());
+            }
+        }
+
+        for (int i=0;i<dict.size();i++){
+            System.out.println(dict.get(i));
+        }
     }
 }

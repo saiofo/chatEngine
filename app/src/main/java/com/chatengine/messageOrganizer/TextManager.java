@@ -71,13 +71,15 @@ public class TextManager {
     public void alpha(){
         if (textContent.equals("天气"))
             searchWeather("6",null);
-        else
+        else{
             semanticRecongize();
+            syntacticAnalysis();
+        }
     }
 
     //依存句法分析
     public void syntacticAnalysis(){
-        final String url = "https://aip.baidubce.com/rpc/2.0/nlp/v1/lexer?charset=UTF-8&" +
+        final String url = "https://aip.baidubce.com/rpc/2.0/nlp/v1/depparser?charset=UTF-8&" +
                 "access_token=24.6374c591c7a16c9f7a499b96e908b87a.2592000.1566093149.282335-16840394";
         final JSONObject map = new JSONObject();
         flag = false;
@@ -88,8 +90,10 @@ public class TextManager {
             public void run() {
                 if (textContent!=null) {
                     try {
-                        map.put("data",textContent);
-//                        SendMessage sendMessage = new SendMessage();
+                        map.put("text",textContent);
+                        map.put("mode",1);
+//                        System.out.println(map.toString());
+
                         final String requestStr = sendMessage.doPostHttpRequest(url, map.toString());
 
                         System.out.println(requestStr);
@@ -97,8 +101,14 @@ public class TextManager {
                         /*
                         文本处理
                          */
+                        String str  =null;
+                        List<String> getDict = new ArrayList<String>();
+                        getDict = contentHandle.searchDictTraget(requestStr,"items");
+
+                        str = String.join("\n",getDict);
 
                         //将结果str发送给主线程
+                        sendToActivity(str);
 
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -112,7 +122,41 @@ public class TextManager {
 
     //词法分析
     public void morphologicalAnalysis(){
+        final String url = "https://aip.baidubce.com/rpc/2.0/nlp/v1/lexer?charset=UTF-8&" +
+                "access_token=24.6374c591c7a16c9f7a499b96e908b87a.2592000.1566093149.282335-16840394";
+        final JSONObject map = new JSONObject();
+        flag = false;
 
+        new Thread(new Runnable() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
+            @Override
+            public void run() {
+                if (textContent!=null) {
+                    try {
+                        map.put("text",textContent);
+//                        map.put("mode",1);
+                        System.out.println(map.toString());
+//                        map.put("mode",1);
+//                        SendMessage sendMessage = new SendMessage();
+                        final String requestStr = sendMessage.doPostHttpRequest(url, map.toString());
+
+                        System.out.println(requestStr);
+
+                        /*
+                        文本处理
+                         */
+
+                        //将结果str发送给主线程
+                        sendToActivity(requestStr);
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+                else
+                    System.out.println("输入内容为空!");
+            }
+        }).start();
     }
 
     //语义识别、实体标注
