@@ -119,5 +119,8 @@ public class ExampleUnitTest {
         }
     }
 
-    //测试enum
+    //测试contenthandle功能
+    public void unitedTestUnit(){
+
+    }
 }

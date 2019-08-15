@@ -103,6 +103,10 @@ public class TextManager {
             searchWeather("6",null);
         if (textContent.equals("南京天气"))
             searchWeather("6","南京");
+        if (textContent.equals("上海天气"))
+            searchWeather("6","上海");
+        if (!textContent.equals("天气")&&!textContent.equals("南京天气")&&!textContent.equals("上海天气"))
+            semanticRecongize();
 
 
 //        if (textContent.equals("天气"))
@@ -144,7 +148,8 @@ public class TextManager {
                         str = join("\n",getDict);
 
                         //将结果str发送给主线程
-                        sendToActivity(str);
+//                        sendToActivity(str);
+
                         //将字典传入TextManager
                         setDict(getDict);
 
