@@ -120,7 +120,7 @@ public class TextManager {
     //依存句法分析
     public void syntacticAnalysis(){
         final String url = "https://aip.baidubce.com/rpc/2.0/nlp/v1/depparser?charset=UTF-8&" +
-                "access_token=24.6374c591c7a16c9f7a499b96e908b87a.2592000.1566093149.282335-16840394";
+                "access_token=24.47213f6b1215e9be9ee9efcd9fd9ebd4.2592000.1568770080.282335-16840394";
         final JSONObject map = new JSONObject();
         flag = false;
 
@@ -166,7 +166,7 @@ public class TextManager {
     //词法分析
     public void morphologicalAnalysis(){
         final String url = "https://aip.baidubce.com/rpc/2.0/nlp/v1/lexer?charset=UTF-8&" +
-                "access_token=24.6374c591c7a16c9f7a499b96e908b87a.2592000.1566093149.282335-16840394";
+                "access_token=24.47213f6b1215e9be9ee9efcd9fd9ebd4.2592000.1568770080.282335-16840394";
         final JSONObject map = new JSONObject();
         flag = false;
 
@@ -205,7 +205,7 @@ public class TextManager {
     //语义识别、实体标注
     public void semanticRecongize(){
         final String url = "https://aip.baidubce.com/rpc/2.0/kg/v1/cognitive/entity_annotation?" +
-                "access_token=24.6374c591c7a16c9f7a499b96e908b87a.2592000.1566093149.282335-16840394";
+                "access_token=24.47213f6b1215e9be9ee9efcd9fd9ebd4.2592000.1568770080.282335-16840394";
         final JSONObject map = new JSONObject();
         flag = false;
 
