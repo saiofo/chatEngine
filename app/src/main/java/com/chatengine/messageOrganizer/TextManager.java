@@ -40,11 +40,7 @@ public class TextManager {
     SendMessage sendMessage = new SendMessage();
 
     //依存句法分析词典
-    List<String> dict = new ArrayList<String>();
-
-    public void setDict(List<String> dict) {
-        this.dict = dict;
-    }
+    private List<String> dict = new ArrayList<String>();
 
     public TextManager(){
 
@@ -83,38 +79,31 @@ public class TextManager {
 
         syntacticAnalysis();
 
-        System.out.println(join("\n",dict));
+//        System.out.println(join("\n",dict));
 
-//        ArrayList<Words> wordsList = contentHandle.createEntity(dict);
-//        Words target = contentHandle.findThatOne(wordsList,"word","天气");
-//        Words location = contentHandle.findThatOne(wordsList,"postag","ns");
-//        String city = null;
-//        if (target!=null){
-//            if (target.getWord().equals("天气")){
-//                if (location==null)
-//                    searchWeather("6",null);
-//                if (location!=null){
-//                    city = location.getWord();
-//                    searchWeather("6",city);
-//                }
-//            }
-//        }
-        if (textContent.equals("天气"))
-            searchWeather("6",null);
-        if (textContent.equals("南京天气"))
-            searchWeather("6","南京");
-        if (textContent.equals("上海天气"))
-            searchWeather("6","上海");
-        if (!textContent.equals("天气")&&!textContent.equals("南京天气")&&!textContent.equals("上海天气"))
+        ArrayList<Words> wordsList = contentHandle.createEntity(dict);
+        Words target = contentHandle.findThatOne(wordsList,"word","天气");
+        Words location = contentHandle.findThatOne(wordsList,"postag","ns");
+        String city = null;
+        if (target!=null){
+            if (target.getWord().equals("天气")){
+                if (location==null)
+                    searchWeather("6",null);
+                if (location!=null){
+                    city = location.getWord();
+                    searchWeather("6",city);
+                }
+            }
+        }else
             semanticRecongize();
-
-
 //        if (textContent.equals("天气"))
 //            searchWeather("6",null);
-//        else{
+//        if (textContent.equals("南京天气"))
+//            searchWeather("6","南京");
+//        if (textContent.equals("上海天气"))
+//            searchWeather("6","上海");
+//        if (!textContent.equals("天气")&&!textContent.equals("南京天气")&&!textContent.equals("上海天气"))
 //            semanticRecongize();
-//            syntacticAnalysis();
-//        }
     }
 
     //依存句法分析
@@ -134,24 +123,25 @@ public class TextManager {
                         map.put("mode",1);
 //                        System.out.println(map.toString());
 
-                        final String requestStr = sendMessage.doPostHttpRequest(url, map.toString());
+                        String requestStr = sendMessage.doPostHttpRequest(url, map.toString());
 
                         System.out.println(requestStr);
 
                         /*
                         文本处理
                          */
-                        String str  =null;
-                        List<String> getDict = new ArrayList<String>();
-                        getDict = contentHandle.searchDictTraget(requestStr,"items");
+//                        String str  =null;
+                        List<String> tmp = contentHandle.searchDictTraget(requestStr,"items");
+                        dict = tmp;
 
-                        str = join("\n",getDict);
+                        for (int i=0;i<dict.size();i++){
+                            System.out.println(dict.get(i));
+                        }
+
+//                        str = join("\n",dict);
 
                         //将结果str发送给主线程
 //                        sendToActivity(str);
-
-                        //将字典传入TextManager
-                        setDict(getDict);
 
                     } catch (Exception e) {
                         e.printStackTrace();

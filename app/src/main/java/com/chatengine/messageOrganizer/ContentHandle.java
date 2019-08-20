@@ -19,8 +19,14 @@ public class ContentHandle {
         List<String> strs = new ArrayList<>();
         //匹配双引号的正则表达式
         String pattStr = "(?<=\""+target+"\":\\s?\").*?(?=\")";
+        //匹配没有双引号的正则表达式
+        String pattStr1 = "(?<=\""+target+"\":\\s?).*?(?=,)";
         //创建Pattern并进行匹配
-        Pattern pattern= Pattern.compile(pattStr);
+        Pattern pattern;
+        if (target.equals("id")||target.equals("head"))
+            pattern = Pattern.compile(pattStr1);
+        else
+            pattern = Pattern.compile(pattStr);
         Matcher matcher=pattern.matcher(str);
         //将所有匹配的结果打印输出
         while(matcher.find()) {
@@ -72,10 +78,12 @@ public class ContentHandle {
      * @return 词语队列
      */
     public ArrayList<Words> createEntity(List<String> dict){
-        Words word = new Words();
+        Words word = null;
         ArrayList<Words> words = new ArrayList<Words>();
 
         for (int i = 0;i<dict.size();i++){
+            word = new Words();
+
             word.setId(searchTraget(dict.get(i), "id").get(0));
             word.setWord(searchTraget(dict.get(i), "word").get(0));
             word.setPostag(searchTraget(dict.get(i), "postag").get(0));
