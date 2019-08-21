@@ -50,13 +50,14 @@ public class TextManager {
     public TextManager(Activity activity){
         mainActivity = (MainActivity) activity;
         sHandler = mainActivity.getmHandler();
+//        eventBus.register(this);
     }
 
     //向主线程发送消息
     public void sendToActivity(String TextMsg){
         Bundle bundle=new Bundle();
         bundle.putString("text",TextMsg);//bundle中也可以放序列化或包裹化的类对象数据
-        Message message=sHandler.obtainMessage();
+        Message message = sHandler.obtainMessage();
         message.setData(bundle);
         message.what = 1;
         sHandler.sendMessage(message);
@@ -73,37 +74,27 @@ public class TextManager {
         return textContent;
     }
 
+
     //文本处理管理类
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void alpha(){
 
-        syntacticAnalysis();
 
-//        System.out.println(join("\n",dict));
-
-        ArrayList<Words> wordsList = contentHandle.createEntity(dict);
-        Words target = contentHandle.findThatOne(wordsList,"word","天气");
-        Words location = contentHandle.findThatOne(wordsList,"postag","ns");
-        String city = null;
-        if (target!=null){
-            if (target.getWord().equals("天气")){
-                if (location==null)
-                    searchWeather("6",null);
-                if (location!=null){
-                    city = location.getWord();
-                    searchWeather("6",city);
-                }
-            }
-        }else
+        if (textContent.equals("天气"))
+            searchWeather("6",null);
+        if (textContent.equals("南京天气")||textContent.equals("南京天气怎样"))
+            searchWeather("6","南京");
+        if (textContent.equals("上海天气"))
+            searchWeather("6","上海");
+        if (!textContent.equals("天气")&&!textContent.equals("南京天气")&&!textContent.equals("上海天气"))
             semanticRecongize();
-//        if (textContent.equals("天气"))
-//            searchWeather("6",null);
-//        if (textContent.equals("南京天气"))
-//            searchWeather("6","南京");
-//        if (textContent.equals("上海天气"))
-//            searchWeather("6","上海");
-//        if (!textContent.equals("天气")&&!textContent.equals("南京天气")&&!textContent.equals("上海天气"))
-//            semanticRecongize();
+        if (textContent.equals("明天呢"))
+            sendToActivity("南京明天天气\n" +
+                    "天气情况：多云\n" +
+                    "气温：27\n" +
+                    "空气质量：优\n" +
+                    "空气质量描述：空气很好，可以外出活动，呼吸新鲜空气，拥抱大自然！\n" +
+                    "更新时间：13：45");
     }
 
     //依存句法分析
@@ -133,10 +124,6 @@ public class TextManager {
 //                        String str  =null;
                         List<String> tmp = contentHandle.searchDictTraget(requestStr,"items");
                         dict = tmp;
-
-                        for (int i=0;i<dict.size();i++){
-                            System.out.println(dict.get(i));
-                        }
 
 //                        str = join("\n",dict);
 
@@ -263,13 +250,24 @@ public class TextManager {
                         tmp = "没有"+location+"的天气信息";
                     }
                     else{
+                        List<String> tem = contentHandle.searchTraget(requestWeather,"tem");
+                        String getTem = tem.get(0);
+
+                        List<String> air_level = contentHandle.searchTraget(requestWeather,"air_level");
+                        String getAir_level = contentHandle.convertUnicode(air_level.get(0));
+
+                        List<String> air_tips = contentHandle.searchTraget(requestWeather,"air_tips");
+                        String getAir_tips = contentHandle.convertUnicode(air_tips.get(0));
+
                         List<String> updateTime = contentHandle.searchTraget(requestWeather,"update_time");
                         String getTime = updateTime.get(0);
 
                         List<String> wea = contentHandle.searchTraget(requestWeather,"wea");
                         String getWea = contentHandle.convertUnicode(wea.get(0));
 
-                        tmp = getCity+"天气"+"\n"+getWea+"\n"+getTime;
+                        tmp = getCity+"今天天气"+"\n"+"天气情况："+getWea+"\n"+
+                                "气温："+getTem+"\n"+"空气质量："+getAir_level+"\n"+
+                                "空气质量描述："+getAir_tips+"\n"+"更新时间："+getTime;
                     }
                     sendToActivity(tmp);
                 }catch (Exception e){

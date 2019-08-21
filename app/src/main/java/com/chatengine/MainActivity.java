@@ -42,11 +42,14 @@ public class MainActivity extends AppCompatActivity {
 
     private String receivedMsg = null;
 
+//    private Handler m2sHandler = textmanager.getM2sHandler();
+
     private Handler mHandler = new Handler(){
         @Override
         public void handleMessage(Message message){
             Bundle bundle = message.getData();
             receivedMsg = bundle.get("text").toString();
+            Msg rMsg = new Msg(receivedMsg, Msg.TYPE_RECEIVED);
             EventBus.getDefault().post(new Msg(receivedMsg, Msg.TYPE_RECEIVED));
             fresh();
 //            Toast.makeText(MainActivity.this,"收到"+bundle.get("text").toString()+"啦",Toast.LENGTH_SHORT).show();
@@ -67,7 +70,6 @@ public class MainActivity extends AppCompatActivity {
 
         inputText = (EditText) findViewById(R.id.input_text);
         send = (Button) findViewById(R.id.send);
-        final TextManager textmanager = new TextManager(this);
         speak = (ImageButton) findViewById(R.id.speak);
 
         initMsgs(); // 初始化消息数据
@@ -97,6 +99,8 @@ public class MainActivity extends AppCompatActivity {
         msgRecyclerView.setLayoutManager(layoutManager);
         adapter = new MsgAdapter(msgList);
         msgRecyclerView.setAdapter(adapter);
+
+        final TextManager textmanager = new TextManager(this);
         send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -107,6 +111,7 @@ public class MainActivity extends AppCompatActivity {
                     fresh();
 //                    获取输入文本
                     textmanager.setTextContent(content);
+
                     textmanager.alpha();
                 }
             }
@@ -126,10 +131,10 @@ public class MainActivity extends AppCompatActivity {
     private void initMsgs() {
         Msg msg1 = new Msg("在么？", Msg.TYPE_RECEIVED);
         msgList.add(msg1);
-        Msg msg2 = new Msg("不在，CNM ", Msg.TYPE_SENT);
+        Msg msg2 = new Msg("你好，我在 ", Msg.TYPE_SENT);
         msgList.add(msg2);
-        Msg msg3 = new Msg("*龙门粗口* ", Msg.TYPE_RECEIVED);
-        msgList.add(msg3);
+//        Msg msg3 = new Msg("*龙门粗口* ", Msg.TYPE_RECEIVED);
+//        msgList.add(msg3);
     }
 
     private void fresh(){
