@@ -86,7 +86,7 @@ public class TextManager {
             searchWeather("6","南京");
         if (textContent.equals("上海天气"))
             searchWeather("6","上海");
-        if (!textContent.equals("天气")&&!textContent.equals("南京天气")&&!textContent.equals("上海天气"))
+        if (!textContent.equals("天气")&&!textContent.equals("南京天气")&&!textContent.equals("上海天气")&&!textContent.equals("南京天气怎样"))
             semanticRecongize();
         if (textContent.equals("明天呢"))
             sendToActivity("南京明天天气\n" +
